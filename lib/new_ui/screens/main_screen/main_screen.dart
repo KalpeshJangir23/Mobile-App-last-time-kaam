@@ -115,8 +115,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       },
                       child: CircleAvatar(
                         radius: 35,
-                        backgroundImage:
-                            AssetImage("assets/images/pfpholder.jpg"),
+                        backgroundImage: AssetImage("assets/images/pfpholder.jpg"),
                       ),
                     )
             ],
@@ -163,9 +162,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         ),
         drawer: Drawer(
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
+            borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
           ),
           backgroundColor: Colors.black,
           child: Padding(
@@ -182,18 +179,14 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       )
                     : CircleAvatar(
                         radius: 35,
-                        backgroundImage:
-                            AssetImage("assets/images/pfpholder.jpg"),
+                        backgroundImage: AssetImage("assets/images/pfpholder.jpg"),
                       ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
                   studentDetails != null ? studentDetails.name : "Tsecite",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge!
-                      .copyWith(fontSize: 30),
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 30),
                 ),
                 SizedBox(
                   height: 30,
@@ -204,9 +197,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     'Home',
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 22,
-                          color: currentPage == 0
-                              ? Theme.of(context).colorScheme.onBackground
-                              : Colors.white,
+                          color: currentPage == 0 ? Theme.of(context).colorScheme.onBackground : Colors.white,
                         ),
                   ),
                   onTap: () {
@@ -222,9 +213,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     'TPC',
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 22,
-                          color: currentPage == 1
-                              ? Theme.of(context).colorScheme.onBackground
-                              : Colors.white,
+                          color: currentPage == 1 ? Theme.of(context).colorScheme.onBackground : Colors.white,
                         ),
                   ),
                   onTap: () {
@@ -242,9 +231,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     'Committees and Events',
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 22,
-                          color: currentPage == 2
-                              ? Theme.of(context).colorScheme.onBackground
-                              : Colors.white,
+                          color: currentPage == 2 ? Theme.of(context).colorScheme.onBackground : Colors.white,
                         ),
                   ),
                   onTap: () {
@@ -260,9 +247,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     'Departments',
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 22,
-                          color: currentPage == 3
-                              ? Theme.of(context).colorScheme.onBackground
-                              : Colors.white,
+                          color: currentPage == 3 ? Theme.of(context).colorScheme.onBackground : Colors.white,
                         ),
                   ),
                   onTap: () {
@@ -278,9 +263,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     'Contact Us',
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           fontSize: 22,
-                          color: currentPage == 4
-                              ? Theme.of(context).colorScheme.onBackground
-                              : Colors.white,
+                          color: currentPage == 4 ? Theme.of(context).colorScheme.onBackground : Colors.white,
                         ),
                   ),
                   onTap: () {
@@ -315,10 +298,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       contentPadding: EdgeInsets.zero,
                       title: Text(
                         data != null ? 'Logout' : 'Login',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
-                            .copyWith(
+                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                               fontSize: 22,
                               color: Theme.of(context).colorScheme.error,
                             ),
@@ -327,22 +307,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                         if (data != null) {
                           final _messaging = FirebaseMessaging.instance;
 
-                          ref
-                              .read(studentModelProvider.notifier)
-                              .update((state) => null);
-                          ref
-                              .read(profilePicProvider.notifier)
-                              .update((state) => null);
-                          _messaging.unsubscribeFromTopic(
-                              NotificationType.notification);
-                          _messaging.unsubscribeFromTopic(
-                              NotificationType.yearBranchDivBatchTopic);
-                          _messaging.unsubscribeFromTopic(
-                              NotificationType.yearBranchDivTopic);
-                          _messaging.unsubscribeFromTopic(
-                              NotificationType.yearBranchTopic);
-                          _messaging
-                              .unsubscribeFromTopic(NotificationType.yearTopic);
+                          ref.read(studentModelProvider.notifier).update((state) => null);
+                          ref.read(profilePicProvider.notifier).update((state) => null);
+                          _messaging.unsubscribeFromTopic(NotificationType.notification);
+                          _messaging.unsubscribeFromTopic(NotificationType.yearBranchDivBatchTopic);
+                          _messaging.unsubscribeFromTopic(NotificationType.yearBranchDivTopic);
+                          _messaging.unsubscribeFromTopic(NotificationType.yearBranchTopic);
+                          _messaging.unsubscribeFromTopic(NotificationType.yearTopic);
                           ref.watch(authProvider.notifier).signout();
                           GoRouter.of(context).go('/login');
                           // Navigator.pop(context);

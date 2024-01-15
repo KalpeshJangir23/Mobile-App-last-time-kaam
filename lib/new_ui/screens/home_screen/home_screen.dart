@@ -1,10 +1,30 @@
+// ignore_for_file: lines_longer_than_80_chars
+
+import 'dart:typed_data';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:date_picker_timeline/date_picker_widget.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:tsec_app/models/event_model/event_model.dart';
 import 'package:tsec_app/models/student_model/student_model.dart';
+import 'package:tsec_app/new_ui/screens/home_screen/widget/containerIconWithLabel.dart';
+import 'package:tsec_app/new_ui/screens/timeTableScreen/Widget/ExpandedCard.dart';
+import 'package:tsec_app/new_ui/screens/timeTableScreen/timeTable.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
+import 'package:tsec_app/provider/event_provider.dart';
+import 'package:tsec_app/screens/departmentlist_screen/department_list.dart';
+import 'package:tsec_app/screens/main_screen/widget/card_display.dart';
 import 'package:tsec_app/screens/profile_screen/profile_screen.dart';
+import 'package:tsec_app/utils/image_assets.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+final selectedDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,13 +36,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedPage = 0;
   List<Widget> widgets = <Widget>[
-    HomeWidget(),
+    const HomeWidget(),
     const Text(
       'Library',
     ),
-    const Text(
-      'Timetable',
-    ),
+    TimeTable(),
     const Text(
       'Railway Concession',
     ),
@@ -83,68 +101,264 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomeWidget extends StatefulWidget {
-  const HomeWidget({super.key});
+class HomeWidget extends ConsumerStatefulWidget {
+  const HomeWidget({Key? key}) : super(key: key);
 
   @override
-  State<HomeWidget> createState() => _HomeWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomeWidgetState extends ConsumerState<HomeWidget> {
+  List<EventModel> eventList = [];
+  bool shouldLoop = true;
+
+  void launchUrlcollege() async {
+    var url = "https://tsec.edu/";
+
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url.toString());
+    } else
+      throw "Could not launch url";
+  }
+
+  void fetchEventDetails() {
+    ref.watch(eventListProvider).when(
+        data: ((data) {
+          eventList.addAll(data ?? []);
+          imgList.clear();
+          for (var data in eventList) {
+            imgList.add(data.imageUrl);
+          }
+          // imgList = [imgList[0]];
+          if (imgList.length == 1) shouldLoop = false;
+        }),
+        loading: () {
+          const CircularProgressIndicator();
+        },
+        error: (Object error, StackTrace? stackTrace) {});
+  }
+
+  static List<String> imgList = [];
+  final CarouselController carouselController = CarouselController();
+
+  //static const _sidePadding = EdgeInsets.symmetric(horizontal: 15);
+  static int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    StudentModel? data = ref.watch(studentModelProvider);
+    fetchEventDetails();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Hi 👋🏻 ${data != null ? data.name : "Tsecite"}",
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 25),
+                ),
+                Text(
+                  "Welcome Back",
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 25),
+                ),
+                const SizedBox(height: 15),
+              ],
+            ),
+          ),
 
-    // return CustomScaffold(
-    //   body: SafeArea(
-    //     child: CustomScrollView(
-    //       slivers: [
-    //         const SliverToBoxAdapter(
-    //           child: MainScreenAppBar(sidePadding: _sidePadding),
-    //         ),
-    //         data == null
-    //             ? const DepartmentList()
-    //             : SliverPadding(
-    //                 padding: const EdgeInsets.all(20),
-    //                 sliver: SliverToBoxAdapter(
-    //                   child: Container(
-    //                     width: _size.width * 0.9,
-    //                     decoration: BoxDecoration(
-    //                       color: _theme.primaryColor,
-    //                       borderRadius: BorderRadius.circular(15.0),
-    //                       border: Border.all(
-    //                         color: _theme.primaryColorLight,
-    //                         width: 1,
-    //                         style: BorderStyle.solid,
-    //                       ),
-    //                       boxShadow: [_boxshadow],
-    //                     ),
-    //                     child: ClipRRect(
-    //                       borderRadius: BorderRadius.circular(15.0),
-    //                       child: DatePicker(
-    //                         DateTime.now(),
-    //                         monthTextStyle: _theme.textTheme.subtitle2!,
-    //                         dayTextStyle: _theme.textTheme.subtitle2!,
-    //                         dateTextStyle: _theme.textTheme.subtitle2!,
-    //                         initialSelectedDate: DateTime.now(),
-    //                         selectionColor: Colors.blue,
-    //                         onDateChange: ((selectedDate) async {
-    //                           ref
-    //                               .read(dayProvider.notifier)
-    //                               .update((state) => selectedDate);
-    //                         }),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ),
-    //         data != null ? const CardDisplay() : const SliverToBoxAdapter()
-    //       ],
-    //     ),
-    //   ),
-    // );
+          // SliverList(
+          //   delegate: SliverChildBuilderDelegate(
+          //     (BuildContext context, int index) {
+          //       return const Padding(
+          //         padding: EdgeInsets.all(20),
+          //         child: CircularDateWidget(),
+          //       );
+          //     },
+          //     childCount: 1,
+          //   ),
+          // ),
+          if (data != null) const ExpandedCard(itemCount: 1),
+          if (data != null)
+            SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ContainerIconWithName(
+                    text: "Railway",
+                    icon: Icons.directions_railway_outlined,
+                    onPressed: () {},
+                  ),
+                  ContainerIconWithName(
+                    text: "Library",
+                    icon: Icons.menu_book_rounded,
+                    onPressed: () {},
+                  )
+                ],
+              ),
+            ),
+          SliverToBoxAdapter(
+            child: Container(
+              width: 300.0,
+              height: 200.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: Center(
+                child: Stack(
+                  children: [
+                    CarouselSlider(
+                      items: imgList
+                          .map(
+                            (item) => GestureDetector(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: CachedNetworkImageProvider(item),
+                                        fit: BoxFit.fill,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.white.withOpacity(1),
+                                          BlendMode.modulate,
+                                        ),
+                                      ),
+                                      color: Colors.white,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  GoRouter.of(context).pushNamed("details_page", queryParameters: {
+                                    "Event Name": eventList[_currentIndex].eventName,
+                                    "Event Time": eventList[_currentIndex].eventTime,
+                                    "Event Date": eventList[_currentIndex].eventDate,
+                                    "Event decription": eventList[_currentIndex].eventDescription,
+                                    "Event registration url": eventList[_currentIndex].eventRegistrationUrl,
+                                    "Event Image Url": item,
+                                    "Event Location": eventList[_currentIndex].eventLocation,
+                                    "Committee Name": eventList[_currentIndex].committeeName
+                                  });
+                                }),
+                          )
+                          .toList(),
+                      options: CarouselOptions(
+                        scrollPhysics: const BouncingScrollPhysics(),
+                        autoPlay: true,
+                        aspectRatio: 2,
+                        viewportFraction: 1,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
+
+// _currentIndex = index;
+class CircularDateWidget extends StatelessWidget {
+  const CircularDateWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 30.0,
+      height: 60.0,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.blue,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              DateFormat('dd').format(DateTime.now()),
+              style: const TextStyle(
+                fontSize: 24.0,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              DateFormat('E').format(DateTime.now()),
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// return CustomScaffold(
+//   body: SafeArea(
+//     child: CustomScrollView(
+//       slivers: [
+//         const SliverToBoxAdapter(
+//           child: MainScreenAppBar(sidePadding: _sidePadding),
+//         ),
+//         data == null
+//             ? const DepartmentList()
+//             : SliverPadding(
+//                 padding: const EdgeInsets.all(20),
+//                 sliver: SliverToBoxAdapter(
+//                   child: Container(
+//                     width: _size.width * 0.9,
+//                     decoration: BoxDecoration(
+//                       color: _theme.primaryColor,
+//                       borderRadius: BorderRadius.circular(15.0),
+//                       border: Border.all(
+//                         color: _theme.primaryColorLight,
+//                         width: 1,
+//                         style: BorderStyle.solid,
+//                       ),
+//                       boxShadow: [_boxshadow],
+//                     ),
+//                     child: ClipRRect(
+//                       borderRadius: BorderRadius.circular(15.0),
+//                       child: DatePicker(
+//                         DateTime.now(),
+//                         monthTextStyle: _theme.textTheme.subtitle2!,
+//                         dayTextStyle: _theme.textTheme.subtitle2!,
+//                         dateTextStyle: _theme.textTheme.subtitle2!,
+//                         initialSelectedDate: DateTime.now(),
+//                         selectionColor: Colors.blue,
+//                         onDateChange: ((selectedDate) async {
+//                           ref
+//                               .read(dayProvider.notifier)
+//                               .update((state) => selectedDate);
+//                         }),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//         data != null ? const CardDisplay() : const SliverToBoxAdapter()
+//       ],
+//     ),
+//   ),
+// );
 
 class MainScreenAppBar extends ConsumerStatefulWidget {
   final EdgeInsets _sidePadding;
@@ -154,8 +368,7 @@ class MainScreenAppBar extends ConsumerStatefulWidget {
   })  : _sidePadding = sidePadding,
         super(key: key);
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MainScreenAppBarState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainScreenAppBarState();
 }
 
 class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {

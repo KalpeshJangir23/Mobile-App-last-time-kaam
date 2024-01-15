@@ -12,6 +12,7 @@ import 'package:tsec_app/provider/firebase_provider.dart';
 import 'package:tsec_app/new_ui/screens/splash_screen/splash_screen.dart';
 import 'package:tsec_app/new_ui/screens/main_screen/main_screen.dart';
 import 'package:tsec_app/new_ui/screens/login_screen/login_screen.dart';
+import 'package:tsec_app/screens/event_detail_screen/event_details.dart';
 // import 'package:tsec_app/screens/event_detail_screen/event_details.dart';
 // import 'package:tsec_app/screens/login_screen/login_screen.dart';
 import 'package:tsec_app/screens/profile_screen/profile_screen.dart';
@@ -49,14 +50,10 @@ Future<void> main() async {
   initGetIt();
 
   final _sharedPrefs = await SharedPreferences.getInstance();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(
       ProviderScope(
-        overrides: [
-          sharedPrefsProvider
-              .overrideWithValue(SharedPrefsProvider(_sharedPrefs))
-        ],
+        overrides: [sharedPrefsProvider.overrideWithValue(SharedPrefsProvider(_sharedPrefs))],
         child: const TSECApp(),
       ),
     );
@@ -116,12 +113,11 @@ class _TSECAppState extends ConsumerState<TSECApp> {
         GoRoute(
           path: '/profile-page',
           builder: (context, state) {
-            String justLoggedInSt = state.uri.queryParameters['justLoggedIn'] ??
-                "false"; // may be null
+            String justLoggedInSt = state.uri.queryParameters['justLoggedIn'] ?? "false"; // may be null
             bool justLoggedIn = justLoggedInSt == "true";
             return ProfilePage(justLoggedIn: justLoggedIn);
           },
-        )
+        ),
         // GoRoute(
         //   path: "/notifications",
         //   builder: (context, state) => const NotificationScreen(),
@@ -138,25 +134,25 @@ class _TSECAppState extends ConsumerState<TSECApp> {
         //   path: "/tpc",
         //   builder: (context, state) => const TPCScreen(),
         // ),
-        // GoRoute(
-        //   name: "details_page",
-        //   path: "/details_page",
-        //   builder: (context, state) {
-        //     EventModel eventModel = EventModel(
-        //         state.uri.queryParameters["Event Name"]!,
-        //         state.uri.queryParameters["Event Time"]!,
-        //         state.uri.queryParameters["Event Date"]!,
-        //         state.uri.queryParameters["Event decription"]!,
-        //         state.uri.queryParameters["Event registration url"]!,
-        //         state.uri.queryParameters["Event Image Url"]!,
-        //         state.uri.queryParameters["Event Location"]!,
-        //         state.uri.queryParameters["Committee Name"]!);
+        GoRoute(
+          name: "details_page",
+          path: "/details_page",
+          builder: (context, state) {
+            EventModel eventModel = EventModel(
+                state.uri.queryParameters["Event Name"]!,
+                state.uri.queryParameters["Event Time"]!,
+                state.uri.queryParameters["Event Date"]!,
+                state.uri.queryParameters["Event decription"]!,
+                state.uri.queryParameters["Event registration url"]!,
+                state.uri.queryParameters["Event Image Url"]!,
+                state.uri.queryParameters["Event Location"]!,
+                state.uri.queryParameters["Committee Name"]!);
 
-        //     return EventDetail(
-        //       eventModel: eventModel,
-        //     );
-        //   },
-        // ),
+            return EventDetail(
+              eventModel: eventModel,
+            );
+          },
+        ),
         // GoRoute(
         //   path: "/department",
         //   builder: (context, state) {
@@ -177,16 +173,12 @@ class _TSECAppState extends ConsumerState<TSECApp> {
   getuserData() async {
     final user = ref.watch(firebaseAuthProvider).currentUser;
     if (user?.uid != null) {
-      StudentModel? studentModel = await ref
-          .watch(authProvider.notifier)
-          .fetchStudentDetails(user, context);
+      StudentModel? studentModel = await ref.watch(authProvider.notifier).fetchStudentDetails(user, context);
       ref.read(studentModelProvider.notifier).state = studentModel;
 
       NotificationType.makeTopic(ref, studentModel);
 
-      await ref
-          .watch(authProvider.notifier)
-          .updateUserStateDetails(studentModel, ref);
+      await ref.watch(authProvider.notifier).updateUserStateDetails(studentModel, ref);
 
       await ref.watch(authProvider.notifier).fetchProfilePic();
     }
@@ -200,8 +192,7 @@ class _TSECAppState extends ConsumerState<TSECApp> {
 
     // final _themeMode = ref.watch(themeProvider);
     return MaterialApp.router(
-      builder: (context, child) =>
-          MediaQuery(data: getTextScale(context), child: child!),
+      builder: (context, child) => MediaQuery(data: getTextScale(context), child: child!),
       routeInformationProvider: _routes.routeInformationProvider,
       routeInformationParser: _routes.routeInformationParser,
       routerDelegate: _routes.routerDelegate,
