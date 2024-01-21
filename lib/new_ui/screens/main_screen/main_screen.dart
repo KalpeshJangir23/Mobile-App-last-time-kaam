@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -46,9 +48,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   int currentPage = 0;
   List<Widget> pages = [
-    HomeScreen(),
-    Container(child: Text("TPC")),
-    Container(child: Text("Commi")),
+    const HomeScreen(),
+    Container(child: const Text("TPC")),
+    Container(child: const Text("Commi")),
     Container(),
     Container(),
     // ProfilePage(
@@ -95,7 +97,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           leadingWidth: 100,
           leading: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               profilePic != null
@@ -113,7 +115,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       onTap: () {
                         _scaffoldKey.currentState?.openDrawer();
                       },
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 35,
                         backgroundImage: AssetImage("assets/images/pfpholder.jpg"),
                       ),
@@ -124,12 +126,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Ink(
-                decoration: ShapeDecoration(
+                decoration: const ShapeDecoration(
                   color: Colors.white, // White background color
                   shape: CircleBorder(), // Circular shape
                 ),
                 child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.note,
                     color: Colors.black, // Black icon color
                   ),
@@ -142,12 +144,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Ink(
-                decoration: ShapeDecoration(
+                decoration: const ShapeDecoration(
                   color: Colors.white, // White background color
                   shape: CircleBorder(), // Circular shape
                 ),
                 child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.event_note,
                     color: Colors.black, // Black icon color
                   ),
@@ -177,18 +179,18 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                         backgroundImage: MemoryImage(profilePic),
                         // backgroundImage: MemoryImage(_image!),
                       )
-                    : CircleAvatar(
+                    : const CircleAvatar(
                         radius: 35,
                         backgroundImage: AssetImage("assets/images/pfpholder.jpg"),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text(
                   studentDetails != null ? studentDetails.name : "Tsecite",
                   style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 30),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 ListTile(

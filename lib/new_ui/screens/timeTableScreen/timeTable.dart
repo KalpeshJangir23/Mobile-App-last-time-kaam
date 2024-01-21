@@ -1,21 +1,20 @@
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: lines_longer_than_80_chars, unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsec_app/models/student_model/student_model.dart';
 import 'package:tsec_app/models/timetable_model/timetable_model.dart';
-import 'package:tsec_app/new_ui/screens/timeTableScreen/Widget/ExpandedCard.dart';
+import 'package:tsec_app/new_ui/screens/home_screen/widget/ExpandedCard.dart';
+import 'package:tsec_app/new_ui/screens/timeTableScreen/Widget/cardDisplay.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
 import 'package:tsec_app/provider/timetable_provider.dart';
 import 'package:tsec_app/screens/departmentlist_screen/department_list.dart';
 import 'package:tsec_app/screens/main_screen/widget/card_display.dart';
 import 'package:tsec_app/utils/timetable_util.dart';
 import 'package:tsec_app/widgets/custom_scaffold.dart';
-
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 final dayProvider = StateProvider.autoDispose<DateTime>((ref) {
   DateTime day = DateTime.now();
-  // debugPrint(day);
   return day;
 });
 
@@ -36,8 +35,6 @@ class _TimeTableState extends ConsumerState<TimeTable> {
 
   @override
   Widget build(BuildContext context) {
-    // List<TimetableModel> timeTableDay = getTimetablebyDay(data as Map<String, dynamic>, dayStr);
-
     final _size = MediaQuery.of(context).size;
     var _theme = Theme.of(context);
     var _boxshadow = BoxShadow(
@@ -47,46 +44,52 @@ class _TimeTableState extends ConsumerState<TimeTable> {
       offset: const Offset(0, 1),
     );
     StudentModel? studentData = ref.watch(studentModelProvider);
+    double _height = 200;
+    bool _seletedColor = false;
 
-    return CustomScaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            studentData == null
-                ? const DepartmentList()
-                : SliverPadding(
-                    padding: const EdgeInsets.all(20),
-                    sliver: SliverToBoxAdapter(
-                      child: Container(
-                        width: _size.width * 0.9,
-                        decoration: BoxDecoration(
-                          color: _theme.primaryColor,
-                          borderRadius: BorderRadius.circular(15.0),
-                          border: Border.all(
-                            color: _theme.primaryColorLight,
-                            width: 1,
-                            style: BorderStyle.solid,
-                          ),
-                          boxShadow: [_boxshadow],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: DatePicker(
-                            DateTime.now(),
-                            monthTextStyle: _theme.textTheme.subtitle2!,
-                            dayTextStyle: _theme.textTheme.subtitle2!,
-                            dateTextStyle: _theme.textTheme.subtitle2!,
-                            initialSelectedDate: DateTime.now(),
-                            selectionColor: Colors.blue,
-                            onDateChange: ((selectedDate) async {
-                              ref.read(dayProvider.notifier).update((state) => selectedDate);
-                            }),
-                          ),
-                        ),
-                      ),
-                    ),
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Schedule",
+              style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 44),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: _size.width * 0.85,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: DatePicker(
+                  DateTime.now(),
+                  monthTextStyle: _theme.textTheme.headlineSmall!.copyWith(
+                    fontSize: 15,
+                    color: _theme.colorScheme.onTertiary,
                   ),
-            studentData != null ? const ExpandedCard(itemCount: 2) : const SliverToBoxAdapter()
+                  dayTextStyle: _theme.textTheme.headlineSmall!.copyWith(
+                    fontSize: 15,
+                    color: _theme.colorScheme.onTertiary,
+                  ),
+                  dateTextStyle: _theme.textTheme.headlineSmall!.copyWith(
+                    fontSize: 15,
+                    color: _theme.colorScheme.onTertiary,
+                  ),
+                  selectedTextColor: _theme.colorScheme.tertiaryContainer, // black
+                  initialSelectedDate: DateTime.now(),
+                  selectionColor: _theme.colorScheme.onSecondary, // white
+                  onDateChange: ((selectedDate) async {
+                    ref.read(dayProvider.notifier).update((state) => selectedDate);
+                  }),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const cardDisplay(),
           ],
         ),
       ),

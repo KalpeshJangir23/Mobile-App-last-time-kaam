@@ -1,8 +1,11 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class scheduleCard extends StatelessWidget {
-  const scheduleCard(this.color, this.opacityColor,
+  const scheduleCard(
+      // this.color, this.opacityColor,
       {Key? key,
       required this.lectureStartTime,
       required this.lectureEndTime,
@@ -11,8 +14,8 @@ class scheduleCard extends StatelessWidget {
       required this.facultyImageurl,
       required this.lectureBatch})
       : super(key: key);
-  final Color? color;
-  final Color? opacityColor;
+  // final Color? color;
+  // final Color? opacityColor;
   final String lectureStartTime;
   final String lectureEndTime;
   final String lectureName;
@@ -31,124 +34,72 @@ class scheduleCard extends StatelessWidget {
       offset: const Offset(0, 1),
     );
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 30.0,
-            height: 60.0,
-            decoration: const BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.blue,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(15.0),
-                bottom: Radius.circular(15.0),
+      padding: const EdgeInsets.fromLTRB(0, 1, 0, 5),
+      child: Center(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 250.0,
+              height: 74.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: _theme.colorScheme.onSecondary,
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(20),
+                  right: Radius.circular(20),
+                ),
               ),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    DateFormat('dd').format(DateTime.now()),
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        "$lectureStartTime-$lectureEndTime",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: _theme.colorScheme.onBackground,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.0,
+                        ),
+                      ),
                     ),
                   ),
-                  Text(
-                    DateFormat('E').format(DateTime.now()),
-                    style: const TextStyle(
-                      fontSize: 11.0,
-                      color: Colors.white,
-                    ),
-                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 5),
+                        child: Text(
+                          lectureName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .copyWith(fontSize: 20, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 2, 10, 5),
+                        child: Text(
+                          facultyName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
-          ),
-          Container(
-            width: 250.0,
-            height: 80.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: _theme.primaryColorLight,
-              borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(30),
-                right: Radius.circular(30),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 2, 10, 0),
-                  child: Text(
-                    "$lectureStartTime-$lectureEndTime",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: _theme.textTheme.headline1!.color,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.0,
-                    ),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 2, 8, 0),
-                      child: Text(
-                        lectureName,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: _theme.textTheme.headline1!.color,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 17.0,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                    ),
-                    // const SizedBox(
-                    //   height: 8.0,
-                    // ),
-                    // FittedBox(
-                    //   fit: BoxFit.scaleDown,
-                    //   child: Text(
-                    //     'Batch : $lectureBatch',
-                    //     style: TextStyle(
-                    //       color: _theme.textTheme.headline2!.color,
-                    //       fontWeight: FontWeight.w300,
-                    //       fontSize: 17.0,
-                    //       letterSpacing: 1.0,
-                    //     ),
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   height: 10.0,
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 2, 8, 0),
-                      child: Text(
-                        facultyName,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

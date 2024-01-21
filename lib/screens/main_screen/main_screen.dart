@@ -86,19 +86,19 @@ class MainScreen extends ConsumerWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
-                        child: DatePicker(
-                          DateTime.now(),
-                          monthTextStyle: _theme.textTheme.subtitle2!,
-                          dayTextStyle: _theme.textTheme.subtitle2!,
-                          dateTextStyle: _theme.textTheme.subtitle2!,
-                          initialSelectedDate: DateTime.now(),
-                          selectionColor: Colors.blue,
-                          onDateChange: ((selectedDate) async {
-                            ref
-                                .read(dayProvider.notifier)
-                                .update((state) => selectedDate);
-                          }),
-                        ),
+                        // child: DatePicker(
+                        //   DateTime.now(),
+                        //   monthTextStyle: _theme.textTheme.subtitle2!,
+                        //   dayTextStyle: _theme.textTheme.subtitle2!,
+                        //   dateTextStyle: _theme.textTheme.subtitle2!,
+                        //   initialSelectedDate: DateTime.now(),
+                        //   selectionColor: Colors.blue,
+                        //   onDateChange: ((selectedDate) async {
+                        //     ref
+                        //         .read(dayProvider.notifier)
+                        //         .update((state) => selectedDate);
+                        //   }),
+                        // ),
                       ),
                     ),
                   ),
@@ -118,8 +118,7 @@ class MainScreenAppBar extends ConsumerStatefulWidget {
   })  : _sidePadding = sidePadding,
         super(key: key);
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MainScreenAppBarState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainScreenAppBarState();
 }
 
 class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {
@@ -173,8 +172,7 @@ class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {
                   onTap: () {
                     launchUrlcollege();
                   },
-                  child: Text("Thadomal Shahani Engineering College",
-                      style: Theme.of(context).textTheme.headline3),
+                  child: Text("Thadomal Shahani Engineering College", style: Theme.of(context).textTheme.headline3),
                 ),
               ),
               data == null
@@ -182,8 +180,7 @@ class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {
                   : Flexible(
                       flex: 1,
                       child: GestureDetector(
-                        onTap: () =>
-                            GoRouter.of(context).push("/notifications"),
+                        onTap: () => GoRouter.of(context).push("/notifications"),
                         child: Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -213,10 +210,7 @@ class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {
                 ),
                 Text(
                   "Bandra, Mumbai",
-                  style: Theme.of(context)
-                      .primaryTextTheme
-                      .bodyText1!
-                      .copyWith(color: kLightModeDarkBlue),
+                  style: Theme.of(context).primaryTextTheme.bodyText1!.copyWith(color: kLightModeDarkBlue),
                 ),
               ],
             ),
@@ -247,13 +241,10 @@ class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {
                           .map(
                             (item) => GestureDetector(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.4,
+                                    width: MediaQuery.of(context).size.width * 0.6,
+                                    height: MediaQuery.of(context).size.width * 0.4,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: CachedNetworkImageProvider(item),
@@ -271,28 +262,16 @@ class _MainScreenAppBarState extends ConsumerState<MainScreenAppBar> {
                                   ),
                                 ),
                                 onTap: () {
-                                  GoRouter.of(context).pushNamed("details_page",
-                                      queryParameters: {
-                                        "Event Name":
-                                            eventList[_currentIndex].eventName,
-                                        "Event Time":
-                                            eventList[_currentIndex].eventTime,
-                                        "Event Date":
-                                            eventList[_currentIndex].eventDate,
-                                        "Event decription":
-                                            eventList[_currentIndex]
-                                                .eventDescription,
-                                        "Event registration url":
-                                            eventList[_currentIndex]
-                                                .eventRegistrationUrl,
-                                        "Event Image Url": item,
-                                        "Event Location":
-                                            eventList[_currentIndex]
-                                                .eventLocation,
-                                        "Committee Name":
-                                            eventList[_currentIndex]
-                                                .committeeName
-                                      });
+                                  GoRouter.of(context).pushNamed("details_page", queryParameters: {
+                                    "Event Name": eventList[_currentIndex].eventName,
+                                    "Event Time": eventList[_currentIndex].eventTime,
+                                    "Event Date": eventList[_currentIndex].eventDate,
+                                    "Event decription": eventList[_currentIndex].eventDescription,
+                                    "Event registration url": eventList[_currentIndex].eventRegistrationUrl,
+                                    "Event Image Url": item,
+                                    "Event Location": eventList[_currentIndex].eventLocation,
+                                    "Committee Name": eventList[_currentIndex].committeeName
+                                  });
                                 }),
                           )
                           .toList(),

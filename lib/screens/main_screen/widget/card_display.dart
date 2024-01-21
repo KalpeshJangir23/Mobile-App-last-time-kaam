@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsec_app/models/occassion_model/occasion_model.dart';
 import 'package:tsec_app/models/student_model/student_model.dart';
+import 'package:tsec_app/new_ui/screens/timeTableScreen/Widget/scheduleCard.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
 import 'package:tsec_app/screens/main_screen/widget/schedule_card.dart';
 import 'package:tsec_app/provider/occasion_provider.dart';
@@ -34,8 +35,7 @@ class _CardDisplayState extends ConsumerState<CardDisplay> {
   ];
 
   Future<String> getFacultyImageUrl(String facultyName) async {
-    final ref =
-        FirebaseStorage.instance.ref().child("faculty/comps/$facultyName.jpg");
+    final ref = FirebaseStorage.instance.ref().child("faculty/comps/$facultyName.jpg");
     String url = (await ref.getDownloadURL()).toString();
     return url;
   }
@@ -83,8 +83,7 @@ class _CardDisplayState extends ConsumerState<CardDisplay> {
             );
           } else if (checkOccasion(day, occasionList) != "") {
             return SliverToBoxAdapter(
-              child: Center(
-                  child: Text("Happy ${checkOccasion(day, occasionList)}!")),
+              child: Center(child: Text("Happy ${checkOccasion(day, occasionList)}!")),
             );
           } else {
             List<TimetableModel> timeTableDay = getTimetablebyDay(data, dayStr);
@@ -105,19 +104,13 @@ class _CardDisplayState extends ConsumerState<CardDisplay> {
                       bool labs = checkLabs(timeTableDay[index].lectureName);
                       final color = labs ? colorList[1] : colorList[0];
                       final opacity = labs ? opacityList[1] : opacityList[0];
-                      final lectureFacultyname =
-                          timeTableDay[index].lectureFacultyName;
-                      return ScheduleCard(
-                        color,
-                        opacity,
+                      final lectureFacultyname = timeTableDay[index].lectureFacultyName;
+                      return scheduleCard(
                         lectureEndTime: timeTableDay[index].lectureEndTime,
                         lectureName: timeTableDay[index].lectureName,
                         lectureStartTime: timeTableDay[index].lectureStartTime,
-                        facultyImageurl:
-                            getFacultyImagebyName(lectureFacultyname),
-                        facultyName: !checkTimetable(lectureFacultyname)
-                            ? "---------"
-                            : lectureFacultyname,
+                        facultyImageurl: getFacultyImagebyName(lectureFacultyname),
+                        facultyName: !checkTimetable(lectureFacultyname) ? "---------" : lectureFacultyname,
                         lectureBatch: timeTableDay[index].lectureBatch,
                       );
                     },
@@ -135,15 +128,13 @@ class _CardDisplayState extends ConsumerState<CardDisplay> {
             ));
   }
 
-  List<TimetableModel> getTimetablebyDay(
-      Map<String, dynamic> data, String day) {
+  List<TimetableModel> getTimetablebyDay(Map<String, dynamic> data, String day) {
     List<TimetableModel> timeTableDay = [];
     final daylist = data[day];
     for (final item in daylist) {
       StudentModel? studentModel = ref.watch(studentModelProvider);
       // debugPrint(studentModel!.batch.toString());
-      if (item['lectureBatch'] == studentModel!.batch.toString() ||
-          item['lectureBatch'] == 'All') {
+      if (item['lectureBatch'] == studentModel!.batch.toString() || item['lectureBatch'] == 'All') {
         debugPrint("in timetable, item is $item");
         timeTableDay.add(TimetableModel.fromJson(item));
       }
@@ -153,8 +144,7 @@ class _CardDisplayState extends ConsumerState<CardDisplay> {
   }
 
   bool checkLabs(String lectureName) {
-    if (lectureName.toLowerCase().endsWith('labs') ||
-        lectureName.toLowerCase().endsWith('lab')) {
+    if (lectureName.toLowerCase().endsWith('labs') || lectureName.toLowerCase().endsWith('lab')) {
       return true;
     }
     return false;

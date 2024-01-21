@@ -91,7 +91,7 @@ late final darkTheme = ThemeData(
     seedColor: Color(0xffB2D0FF),
     primary: Color(0xffB2D0FF),
     background: Color(0xFF1B1B1B),
-    onBackground: Color(0xff2A66FF) ,
+    onBackground: Color(0xff2A66FF),
     secondary: Color(0xff835983),
     onPrimary: Colors.black,
     onSecondary: Colors.white,
@@ -174,8 +174,7 @@ TextButtonThemeData _getTextButtonTheme({
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       side: MaterialStateBorderSide.resolveWith((states) {
-        if (states.contains(MaterialState.pressed))
-          return BorderSide(color: darkColor);
+        if (states.contains(MaterialState.pressed)) return BorderSide(color: darkColor);
         return null;
       }),
     ),
@@ -213,8 +212,7 @@ ElevatedButtonThemeData _getElevatedButtonTheme({
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       side: MaterialStateBorderSide.resolveWith((states) {
-        if (states.contains(MaterialState.pressed))
-          return BorderSide(color: darkColor);
+        if (states.contains(MaterialState.pressed)) return BorderSide(color: darkColor);
         return null;
       }),
     ),
