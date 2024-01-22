@@ -90,7 +90,7 @@ class scheduleCard extends StatelessWidget {
                           facultyName,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
                         ),
                       )
                     ],

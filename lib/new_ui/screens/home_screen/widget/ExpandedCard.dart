@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsec_app/models/occassion_model/occasion_model.dart';
 import 'package:tsec_app/models/student_model/student_model.dart';
 import 'package:tsec_app/models/timetable_model/timetable_model.dart';
-import 'package:tsec_app/new_ui/screens/timeTableScreen/Widget/scheduleCard.dart';
+import 'package:tsec_app/new_ui/screens/home_screen/widget/scheduleCard.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
 import 'package:tsec_app/provider/timetable_provider.dart';
 import 'package:tsec_app/provider/occasion_provider.dart';
@@ -103,7 +103,7 @@ class _ExpandedCardState extends ConsumerState<ExpandedCard> {
                             color: Colors.black.withOpacity(0.2), // Adjust the shadow color and opacity
                             spreadRadius: 2, // Adjust the spread radius
                             blurRadius: 5, // Adjust the blur radius
-                            offset: Offset(0, 3), // Adjust the shadow offset
+                            offset: const Offset(0, 3), // Adjust the shadow offset
                           ),
                         ],
                       ),
@@ -113,13 +113,11 @@ class _ExpandedCardState extends ConsumerState<ExpandedCard> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Container(
-                                child: Text(
-                                  "Today’s Schedule",
-                                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 20, color: _theme.colorScheme.onPrimary),
-                                ),
+                              Text(
+                                "Today’s Schedule",
+                                style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 20, color: _theme.colorScheme.onPrimary),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               if (isExpanded)
@@ -140,7 +138,7 @@ class _ExpandedCardState extends ConsumerState<ExpandedCard> {
                                               lectureName: timeTableDay[index].lectureName,
                                               lectureStartTime: timeTableDay[index].lectureStartTime,
                                               facultyImageurl: getFacultyImagebyName(lectureFacultyname),
-                                              facultyName: !checkTimetable(lectureFacultyname) ? "---------" : lectureFacultyname,
+                                              facultyName: !checkTimetable(lectureFacultyname) ? "" : lectureFacultyname,
                                               lectureBatch: timeTableDay[index].lectureBatch,
                                             );
                                           },
@@ -153,7 +151,7 @@ class _ExpandedCardState extends ConsumerState<ExpandedCard> {
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TimeContainer(),
+                                    const TimeContainer(),
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
@@ -167,7 +165,7 @@ class _ExpandedCardState extends ConsumerState<ExpandedCard> {
                                               lectureName: timeTableDay[index].lectureName,
                                               lectureStartTime: timeTableDay[index].lectureStartTime,
                                               facultyImageurl: getFacultyImagebyName(lectureFacultyname),
-                                              facultyName: !checkTimetable(lectureFacultyname) ? "---------" : lectureFacultyname,
+                                              facultyName: !checkTimetable(lectureFacultyname) ? "" : lectureFacultyname,
                                               lectureBatch: timeTableDay[index].lectureBatch,
                                             );
                                           },

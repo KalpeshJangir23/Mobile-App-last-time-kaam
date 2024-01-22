@@ -13,7 +13,6 @@ import 'package:tsec_app/new_ui/screens/home_screen/home_screen.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
 import 'package:tsec_app/provider/occasion_provider.dart';
 import 'package:tsec_app/screens/departmentlist_screen/department_list.dart';
-import 'package:tsec_app/screens/main_screen/widget/card_display.dart';
 import 'package:tsec_app/screens/profile_screen/profile_screen.dart';
 import 'package:tsec_app/utils/notification_type.dart';
 import 'package:tsec_app/utils/timetable_util.dart';

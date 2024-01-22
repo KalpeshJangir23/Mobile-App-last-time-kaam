@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
 import 'package:tsec_app/screens/department_screen/department_screen.dart';
-import 'package:tsec_app/screens/main_screen/widget/card_display.dart';
+import 'package:tsec_app/screens/timeTablenewUI/widget/card_display.dart';
 import 'package:tsec_app/utils/notification_type.dart';
 import 'package:tsec_app/utils/timetable_util.dart';
 import 'package:url_launcher/link.dart';
@@ -35,8 +35,7 @@ class CustomScaffold extends ConsumerStatefulWidget {
   ConsumerState<CustomScaffold> createState() => _CustomScaffoldState();
 }
 
-class _CustomScaffoldState extends ConsumerState<CustomScaffold>
-    with SingleTickerProviderStateMixin {
+class _CustomScaffoldState extends ConsumerState<CustomScaffold> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
 
@@ -103,9 +102,7 @@ class _CustomScaffoldState extends ConsumerState<CustomScaffold>
                   ),
                   child: IconTheme(
                     data: const IconThemeData(color: kLightModeLightBlue),
-                    child: ref.watch(themeProvider) == ThemeMode.dark
-                        ? const Icon(Icons.light_mode)
-                        : const Icon(Icons.dark_mode),
+                    child: ref.watch(themeProvider) == ThemeMode.dark ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode),
                   ),
                 ),
               ),
@@ -185,19 +182,12 @@ class _CustomScaffoldState extends ConsumerState<CustomScaffold>
                     final _messaging = FirebaseMessaging.instance;
 
                     if (data != null) {
-                      ref
-                          .read(studentModelProvider.notifier)
-                          .update((state) => null);
-                      _messaging
-                          .unsubscribeFromTopic(NotificationType.notification);
-                      _messaging.unsubscribeFromTopic(
-                          NotificationType.yearBranchDivBatchTopic);
-                      _messaging.unsubscribeFromTopic(
-                          NotificationType.yearBranchDivTopic);
-                      _messaging.unsubscribeFromTopic(
-                          NotificationType.yearBranchTopic);
-                      _messaging
-                          .unsubscribeFromTopic(NotificationType.yearTopic);
+                      ref.read(studentModelProvider.notifier).update((state) => null);
+                      _messaging.unsubscribeFromTopic(NotificationType.notification);
+                      _messaging.unsubscribeFromTopic(NotificationType.yearBranchDivBatchTopic);
+                      _messaging.unsubscribeFromTopic(NotificationType.yearBranchDivTopic);
+                      _messaging.unsubscribeFromTopic(NotificationType.yearBranchTopic);
+                      _messaging.unsubscribeFromTopic(NotificationType.yearTopic);
                     }
                     ref.watch(authProvider.notifier).signout();
                     GoRouter.of(context).go('/login');
@@ -269,9 +259,7 @@ class _CustomScaffoldState extends ConsumerState<CustomScaffold>
                           }
                           overlayEntry?.remove();
                           overlayEntry = null;
-                          ref
-                              .read(dayProvider.notifier)
-                              .update((state) => DateTime.now());
+                          ref.read(dayProvider.notifier).update((state) => DateTime.now());
                         },
                         borderRadius: BorderRadius.circular(50),
                         child: Container(
@@ -315,7 +303,6 @@ class _CustomScaffoldState extends ConsumerState<CustomScaffold>
 
   Future<void> _navigate(String path) async {
     await _controller.reverse();
-
 
     final router = GoRouter.of(context);
     if (GoRouterState.of(context).uri.toString() != path) router.push(path);
@@ -432,14 +419,11 @@ class _MenuIconPainter extends CustomPainter {
       ..color = const Color(0xffF2F5F8)
       ..strokeCap = StrokeCap.round;
 
-    canvas.drawLine(Offset(size.width * 0.4478167, size.height * 0.09358714),
-        Offset(size.width * 0.9595000, size.height * 0.09358714), paint);
+    canvas.drawLine(Offset(size.width * 0.4478167, size.height * 0.09358714), Offset(size.width * 0.9595000, size.height * 0.09358714), paint);
 
-    canvas.drawLine(Offset(size.width * 0.06296800, size.height * 0.5221571),
-        Offset(size.width * 0.9595000, size.height * 0.5221571), paint);
+    canvas.drawLine(Offset(size.width * 0.06296800, size.height * 0.5221571), Offset(size.width * 0.9595000, size.height * 0.5221571), paint);
 
-    canvas.drawLine(Offset(size.width * 0.06296800, size.height * 0.9507286),
-        Offset(size.width * 0.6659967, size.height * 0.9507286), paint);
+    canvas.drawLine(Offset(size.width * 0.06296800, size.height * 0.9507286), Offset(size.width * 0.6659967, size.height * 0.9507286), paint);
   }
 
   @override

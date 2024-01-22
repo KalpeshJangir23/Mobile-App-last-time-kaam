@@ -11,9 +11,9 @@ import 'package:tsec_app/models/event_model/event_model.dart';
 import 'package:tsec_app/models/student_model/student_model.dart';
 import 'package:tsec_app/new_ui/screens/home_screen/widget/containerIconWithLabel.dart';
 import 'package:tsec_app/new_ui/screens/home_screen/widget/ExpandedCard.dart';
-import 'package:tsec_app/new_ui/screens/timeTableScreen/timeTable.dart';
 import 'package:tsec_app/provider/auth_provider.dart';
 import 'package:tsec_app/provider/event_provider.dart';
+import 'package:tsec_app/screens/timeTablenewUI/timeTable.dart';
 import 'package:tsec_app/screens/profile_screen/profile_screen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
